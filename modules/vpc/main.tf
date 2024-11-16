@@ -37,3 +37,46 @@ resource "aws_subnet" "public_subnet_1b" {
     Name = "pub-subnet-1b"
   }
 }
+
+import {
+  to = aws_internet_gateway.igw
+  id = "igw-0796f8e6aea089a15"
+}
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.this.id
+  tags = {
+    Name = "weijie-igw"
+  }
+}
+
+import {
+  to = aws_route_table.rt
+  id = "rtb-0f58c2e376a084290"
+}
+resource "aws_route_table" "rt" {
+  vpc_id = aws_vpc.this.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+}
+
+import {
+  to = aws_route_table_association.pub1a
+  id = "subnet-03b64f004651bbf53/rtb-0f58c2e376a084290"
+}
+
+resource "aws_route_table_association" "pub1a" {
+  subnet_id      = aws_subnet.public_subnet_1a.id
+  route_table_id = aws_route_table.rt.id
+}
+
+import {
+  to = aws_route_table_association.pub1b
+  id = "subnet-0e70486df9027725b/rtb-0f58c2e376a084290"
+}
+
+resource "aws_route_table_association" "pub1b" {
+  subnet_id      = aws_subnet.public_subnet_1b.id
+  route_table_id = aws_route_table.rt.id
+}
