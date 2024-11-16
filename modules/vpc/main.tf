@@ -11,19 +11,29 @@ resource "aws_vpc" "this" {
   }
 }
 
-# import {
-#   to = aws_subnet.public_subnet_1b
-#   id = "subnet-005bd47861e9f3eaa"
-# }
+import {
+  to = aws_subnet.public_subnet_1a
+  id = "subnet-03b64f004651bbf53"
+}
 
-# resource "aws_subnet" "public_subnet_1b" {
-#   availability_zone = "ap-southeast-1b"
-#   cidr_block        = "10.0.0.16/28"
-#   tags = {
-#     Name = "Weijie-pub-1b"
-#   }
-#   tags_all = {
-#     Name = "weijie-pub-1b"
-#   }
-#   vpc_id = aws_vpc.this.id
-# }
+resource "aws_subnet" "public_subnet_1a" {
+  vpc_id            = aws_vpc.this.id
+  availability_zone = "ap-southeast-1a"
+  cidr_block        = "10.0.1.0/28"
+  tags = {
+    Name = "pub-subnet-1a"
+  }
+}
+import {
+  to = aws_subnet.public_subnet_1b
+  id = "subnet-0e70486df9027725b"
+}
+
+resource "aws_subnet" "public_subnet_1b" {
+  vpc_id            = aws_vpc.this.id
+  availability_zone = "ap-southeast-1b"
+  cidr_block        = "10.0.1.16/28"
+  tags = {
+    Name = "pub-subnet-1b"
+  }
+}
