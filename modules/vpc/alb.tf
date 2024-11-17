@@ -24,6 +24,14 @@ resource "aws_vpc_security_group_ingress_rule" "allow_https_ipv4" {
   to_port           = 443
 }
 
+resource "aws_vpc_security_group_egress_rule" "allow_all_egress_for_alb" {
+  security_group_id = aws_security_group.public_http_https_traffic.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 0
+  ip_protocol       = "tcp"
+  to_port           = 65535
+}
+
 resource "aws_lb_target_group" "app_front_end" {
   name             = "weijie-tg"
   port             = 3000
